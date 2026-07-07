@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -6,53 +5,43 @@ module.exports = (sequelize) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
     },
-    username: {
-      type: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING(100),
       allowNull: false,
-      unique: true
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       unique: true,
-      lowercase: true
+      validate: {
+        isEmail: true,
+      },
     },
     password: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM('admin', 'superadmin'),
-      defaultValue: 'admin'
+      type: DataTypes.ENUM('super_admin', 'admin'),
+      allowNull: false,
+      defaultValue: 'admin',
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    }
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
   }, {
     tableName: 'admins',
     timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: false,
-    hooks: {
-      beforeCreate: async (admin) => {
-        const salt = await bcrypt.genSalt(10);
-        admin.password = await bcrypt.hash(admin.password, salt);
+    indexes: [
+      {
+        unique: true,
+        fields: ['email'],
       },
-      beforeUpdate: async (admin) => {
-        if (admin.changed('password')) {
-          const salt = await bcrypt.genSalt(10);
-          admin.password = await bcrypt.hash(admin.password, salt);
-        }
-      }
-    }
+    ],
   });
-
-  Admin.prototype.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
-  };
 
   return Admin;
 };
