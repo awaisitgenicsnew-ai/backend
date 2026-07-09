@@ -33,7 +33,7 @@ module.exports = (sequelize) => {
     },
     subject: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
     message: {
       type: DataTypes.TEXT,

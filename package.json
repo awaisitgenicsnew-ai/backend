@@ -11,7 +11,14 @@
     "seed": "npx sequelize-cli db:seed:all",
     "seed:undo": "npx sequelize-cli db:seed:undo:all"
   },
-  "keywords": ["api", "rest", "express", "sequelize", "mysql", "jwt"],
+  "keywords": [
+    "api",
+    "rest",
+    "express",
+    "sequelize",
+    "mysql",
+    "jwt"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -24,6 +31,7 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "multer": "^2.2.0",
     "mysql2": "^3.6.5",
     "sequelize": "^6.35.2"
   },
