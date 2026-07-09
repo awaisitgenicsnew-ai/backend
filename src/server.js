@@ -46,7 +46,7 @@ const upload = multer({
 app.locals.upload = upload;
 
 // Serve static files from uploads directory
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Security middleware
 app.use(helmet());
