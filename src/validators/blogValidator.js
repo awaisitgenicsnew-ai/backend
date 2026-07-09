@@ -76,7 +76,7 @@ const validateBlog = [
     .isArray()
     .withMessage('Category IDs must be an array.')
     .custom((value) => {
-      if (value && value.some(id => !Number.isInteger(id))) {
+      if (value && Array.isArray(value) && value.some(id => !Number.isInteger(id))) {
         throw new Error('All category IDs must be integers.');
       }
       return true;
