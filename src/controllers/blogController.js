@@ -164,6 +164,16 @@ exports.createBlog = async (req, res) => {
       categoryIds,
     } = req.body;
     
+    // Parse categoryIds if sent as JSON string
+    let parsedCategoryIds = categoryIds;
+    if (typeof categoryIds === 'string') {
+      try {
+        parsedCategoryIds = JSON.parse(categoryIds);
+      } catch (e) {
+        parsedCategoryIds = [];
+      }
+    }
+    
     // Handle image upload
     let image = null;
     if (req.file) {
@@ -187,8 +197,8 @@ exports.createBlog = async (req, res) => {
     });
 
     // Associate categories if provided
-    if (categoryIds && categoryIds.length > 0) {
-      await blog.setCategories(categoryIds);
+    if (parsedCategoryIds && parsedCategoryIds.length > 0) {
+      await blog.setCategories(parsedCategoryIds);
     }
 
     // Fetch the blog with associations
@@ -248,6 +258,16 @@ exports.updateBlog = async (req, res) => {
       categoryIds,
     } = req.body;
     
+    // Parse categoryIds if sent as JSON string
+    let parsedCategoryIds = categoryIds;
+    if (typeof categoryIds === 'string') {
+      try {
+        parsedCategoryIds = JSON.parse(categoryIds);
+      } catch (e) {
+        parsedCategoryIds = [];
+      }
+    }
+    
     const blog = await Blog.findByPk(id);
     
     if (!blog) {
@@ -280,9 +300,9 @@ exports.updateBlog = async (req, res) => {
     });
 
     // Update categories if provided
-    if (categoryIds !== undefined) {
-      if (categoryIds.length > 0) {
-        await blog.setCategories(categoryIds);
+    if (parsedCategoryIds !== undefined) {
+      if (parsedCategoryIds.length > 0) {
+        await blog.setCategories(parsedCategoryIds);
       } else {
         await blog.setCategories([]);
       }

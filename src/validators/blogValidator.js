@@ -73,9 +73,18 @@ const validateBlog = [
 
   body('categoryIds')
     .optional()
-    .isArray()
-    .withMessage('Category IDs must be an array.')
     .custom((value) => {
+      // Parse JSON string if sent as string (from FormData)
+      if (typeof value === 'string') {
+        try {
+          value = JSON.parse(value);
+        } catch (e) {
+          throw new Error('Category IDs must be a valid JSON array.');
+        }
+      }
+      if (value && !Array.isArray(value)) {
+        throw new Error('Category IDs must be an array.');
+      }
       if (value && Array.isArray(value) && value.some(id => !Number.isInteger(id))) {
         throw new Error('All category IDs must be integers.');
       }
