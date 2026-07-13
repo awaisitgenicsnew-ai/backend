@@ -28,6 +28,7 @@ db.Category = require('./Category')(sequelize, Sequelize);
 db.Author = require('./Author')(sequelize, Sequelize);
 db.Blog = require('./Blog')(sequelize, Sequelize);
 db.BlogCategory = require('./BlogCategory')(sequelize, Sequelize);
+db.Project = require('./Project')(sequelize, Sequelize);
 
 // Define associations
 db.Admin.hasMany(db.Lead, { foreignKey: 'assignedTo', as: 'assignedLeads' });
