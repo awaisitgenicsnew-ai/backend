@@ -19,4 +19,7 @@ Thumbs.db
 *.swp
 *.swo
 
+# Uploads (stored separately on production)
+uploads/
+
 
