@@ -14,9 +14,17 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 // Configure multer for file uploads
+const fs = require('fs');
+const uploadsDir = path.join(__dirname, '../uploads');
+
+// Ensure uploads directory exists
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads'));
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -46,7 +54,7 @@ const upload = multer({
 app.locals.upload = upload;
 
 // Serve static files from uploads directory
-app.use('/api/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/uploads', express.static(uploadsDir));
 
 // Security middleware
 app.use(helmet());
