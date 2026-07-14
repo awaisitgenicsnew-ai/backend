@@ -24,6 +24,12 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: 'In Planning',
     },
+    publication_status: {
+      type: DataTypes.ENUM('draft', 'published'),
+      allowNull: false,
+      defaultValue: 'draft',
+      field: 'publication_status',
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,

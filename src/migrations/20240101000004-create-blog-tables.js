@@ -156,8 +156,18 @@ module.exports = {
     });
 
     // Add indexes
-    await queryInterface.addIndex('blogs', ['status']);
-    await queryInterface.addIndex('blogs', ['author_id']);
+    try {
+      await queryInterface.addIndex('blogs', ['status']);
+    } catch (error) {
+      // Index might already exist, ignore error
+      console.log('Index blogs_status might already exist, skipping...');
+    }
+    try {
+      await queryInterface.addIndex('blogs', ['author_id']);
+    } catch (error) {
+      // Index might already exist, ignore error
+      console.log('Index blogs_author_id might already exist, skipping...');
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

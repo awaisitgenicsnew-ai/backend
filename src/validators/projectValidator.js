@@ -27,6 +27,11 @@ const validateProject = [
     .isIn(['In Planning', 'In Development', 'Coming Soon'])
     .withMessage('Status must be one of: In Planning, In Development, Coming Soon.'),
 
+  body('publication_status')
+    .optional()
+    .isIn(['draft', 'published'])
+    .withMessage('Publication status must be one of: draft, published.'),
+
   body('description')
     .optional()
     .trim()
