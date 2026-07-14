@@ -5,11 +5,12 @@ const { Project } = require('../models');
  */
 exports.getAllProjects = async (req, res) => {
   try {
-    const { status, badge } = req.query;
+    const { status, badge, publication_status } = req.query;
 
     const where = {};
     if (status) where.status = status;
     if (badge) where.badge = badge;
+    if (publication_status) where.publication_status = publication_status;
 
     const projects = await Project.findAll({
       where,
@@ -67,6 +68,7 @@ exports.createProject = async (req, res) => {
       location,
       badge,
       status,
+      publication_status,
       description,
       type,
       handover,
@@ -91,6 +93,7 @@ exports.createProject = async (req, res) => {
       location,
       badge: badge || null,
       status: status || 'In Planning',
+      publication_status: publication_status || 'draft',
       description,
       type,
       handover,
@@ -128,6 +131,7 @@ exports.updateProject = async (req, res) => {
       location,
       badge,
       status,
+      publication_status,
       description,
       type,
       handover,
@@ -161,6 +165,7 @@ exports.updateProject = async (req, res) => {
       location,
       badge: badge || null,
       status,
+      publication_status,
       description,
       type,
       handover,
