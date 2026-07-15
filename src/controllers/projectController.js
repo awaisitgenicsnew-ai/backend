@@ -82,10 +82,22 @@ exports.createProject = async (req, res) => {
 
     // Handle image upload
     let image = null;
-    if (req.file) {
-      image = `/uploads/${req.file.filename}`;
+    if (req.files && req.files.image && req.files.image[0]) {
+      image = `/uploads/${req.files.image[0].filename}`;
     } else if (req.body.image) {
       image = req.body.image;
+    }
+
+    // Handle multiple images upload
+    let images = [];
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      images = req.files.images.map(file => `/uploads/${file.filename}`);
+    } else if (req.body.images) {
+      try {
+        images = JSON.parse(req.body.images);
+      } catch (e) {
+        images = [];
+      }
     }
 
     const project = await Project.create({
@@ -103,6 +115,7 @@ exports.createProject = async (req, res) => {
       secondaryButtonText,
       secondaryButtonLink,
       image,
+      images,
       imageAlt,
     });
 
@@ -154,10 +167,22 @@ exports.updateProject = async (req, res) => {
 
     // Handle image upload
     let image = project.image;
-    if (req.file) {
-      image = `/uploads/${req.file.filename}`;
+    if (req.files && req.files.image && req.files.image[0]) {
+      image = `/uploads/${req.files.image[0].filename}`;
     } else if (req.body.image !== undefined) {
       image = req.body.image;
+    }
+
+    // Handle multiple images upload
+    let images = project.images || [];
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      images = req.files.images.map(file => `/uploads/${file.filename}`);
+    } else if (req.body.images !== undefined) {
+      try {
+        images = JSON.parse(req.body.images);
+      } catch (e) {
+        images = project.images || [];
+      }
     }
 
     await project.update({
@@ -175,6 +200,7 @@ exports.updateProject = async (req, res) => {
       secondaryButtonText,
       secondaryButtonLink,
       image,
+      images,
       imageAlt,
     });
 

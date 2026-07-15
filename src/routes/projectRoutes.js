@@ -11,7 +11,10 @@ router.get('/:id', projectController.getProjectById);
 
 // Create new project with image upload
 router.post('/', (req, res, next) => {
-  req.app.locals.upload.single('image')(req, res, (err) => {
+  req.app.locals.upload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+  ])(req, res, (err) => {
     if (err) {
       return res.status(400).json({
         success: false,
@@ -24,7 +27,10 @@ router.post('/', (req, res, next) => {
 
 // Update project with image upload
 router.put('/:id', (req, res, next) => {
-  req.app.locals.upload.single('image')(req, res, (err) => {
+  req.app.locals.upload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+  ])(req, res, (err) => {
     if (err) {
       return res.status(400).json({
         success: false,
