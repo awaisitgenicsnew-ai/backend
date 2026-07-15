@@ -75,6 +75,10 @@ module.exports = (sequelize) => {
       allowNull: true,
       field: 'image_alt',
     },
+    images: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
   }, {
     tableName: 'projects',
     timestamps: true,
